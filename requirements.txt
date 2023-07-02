@@ -6,6 +6,6 @@ pandas
 requests
 scikit-learn
 scipy
-
+gunicorn==19.7.1
 
 
