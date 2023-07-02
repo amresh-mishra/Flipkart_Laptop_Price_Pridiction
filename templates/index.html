@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Laptop Price Prediction</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 40px;
+            color: #333;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        select,
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 20px;
+            color: #333;
+        }
+        form {
+            background-color: #f7f7f7;
+            border: 1px solid #ddd;
+            padding: 30px;
+        }
+
+        label {
+            color: #555;
+            font-size: 16px;
+        }
+
+        select,
+        input[type="number"] {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            color: #555;
+        }
+
+        input[type="submit"] {
+            background-color: #007bff;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Laptop Price Prediction</h1>
+
+    <form action="{{ url_for('predict') }}" method="POST">
+        <label for="company">Brand:</label>
+        <select id="company" name="company">
+            <option value="">Select Brand</option>
+            {% for company in companies %}
+            <option value="{{ company }}">{{ company }}</option>
+            {% endfor %}
+        </select>
+        
+
+        <label for="laptop_type">Laptop Type:</label>
+        <select name="laptop_type">
+            <option value="">Select Laptop Type</option>
+            {% for laptop_type in types %}
+            <option value="{{ laptop_type }}">{{ laptop_type }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="cpu">CPU Brand:</label>
+        <select name="cpu">
+            <option value="">Select CPU Brand</option>
+            {% for cpu_brand in cpus %}
+            <option value="{{ cpu_brand }}">{{ cpu_brand }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="hdd">HDD (in GB):</label>
+        <select name="hdd">
+            <option value="">Select Required HDD</option>
+            <option value="0">0</option>
+            <option value="128">128</option>
+            <option value="256">256</option>
+            <option value="512">512</option>
+            <option value="1024">1024</option>
+            <option value="2048">2048</option>
+        </select>
+
+        <label for="ssd">SSD (in GB):</label>
+        <select name="ssd">
+            <option value="">Select Required SSD</option>
+            <option value="0">0</option>
+            <option value="8">8</option>
+            <option value="128">128</option>
+            <option value="256">256</option>
+            <option value="512">512</option>
+            <option value="1024">1024</option>
+        </select>
+
+        <label for="screen_size">Screen Size:</label>
+        
+        <input type="number" name="screen_size" step="0.1" placeholder="Enter screen size" required>
+
+        <label for="ram">RAM (in GB):</label>
+        <select name="ram">
+            <option value="">Select Ram (GB)</option>
+            <option value="2">2</option>
+            <option value="4">4</option>
+            <option value="6">6</option>
+            <option value="8">8</option>
+            <option value="12">12</option>
+            <option value="16">16</option>
+            <option value="24">24</option>
+            <option value="32">32</option>
+            <option value="64">64</option>
+        </select>
+
+        <label for="weight">Weight of the Laptop:</label>
+        <input type="number" name="weight" step="0.1" placeholder="Input Weight (kg)" required>
+        
+        <label for="touchscreen">Touchscreen:</label>
+        <select name="touchscreen">
+            <option value="No">No</option>
+            <option value="Yes">Yes</option>
+        </select>
+
+        <label for="ips">IPS:</label>
+        <select name="ips">
+            <option value="">Select IPS </option>
+            <option value="No">No</option>
+            <option value="Yes">Yes</option>
+        </select>
+
+        <label for="resolution">Screen Resolution:</label>
+        <select id="resolution" name="resolution">
+            <option value="">Select Resolution (Pxl)</option>
+            <option value="1920x1080">1920x1080</option>
+            <option value="1366x768">1366x768</option>
+            <option value="1600x900">1600x900</option>
+            <option value="3840x2160">3840x2160</option>
+            <option value="3200x1800">3200x1800</option>
+            <option value="2880x1800">2880x1800</option>
+            <option value="2560x1600">2560x1600</option>
+            <option value="2560x1440">2560x1440</option>
+            <option value="2304x1440">2304x1440</option>
+        </select>
+
+        <label for="gpu">GPU Manufacturer:</label>
+        <select name="gpu">
+            <option value="">Select GPU Brand </option>
+            {% for gpu_manufacturer in gpus %}
+            <option value="{{ gpu_manufacturer }}">{{ gpu_manufacturer }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="os">Operating System:</label>
+        <select name="os">
+            <option value="">Select OS </option>
+            {% for operating_system in oss %}
+            <option value="{{ operating_system }}">{{ operating_system }}</option>
+            {% endfor %}
+        </select>
+
+        <input type="submit" value="Predict">
+    </form>
+
+    {% if predicted_price %}
+    <h2>Predicted Price: {{ predicted_price }}</h2>
+    {% endif %}
+</body>
+</html>
